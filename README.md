@@ -23,6 +23,20 @@ In this project, you can build your own C++ application or extend this Snake gam
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
 
+## New Feature added
+* Obstacle
+  * A new Obstacle class has been added to introduce obstacles in the game.
+  * The obstacles are randomly generated on the game grid and act as barriers that the snake must avoid.
+  * If the snake's head collides with an obstacle, the snake dies, and the game is over.
+
+* Game Restart:
+  * After the snake dies (either by colliding with itself or an obstacle), you can press the spacebar to restart the game without needing to close and reopen the game.
+
+* Bonus Food
+  * Bonus Food has been added, which appears randomly on the grid with a pink color.
+  * Bonus food only remains active for a limited time (now 8 seconds), after which it disappears if not eaten by the snake.
+  * The probability of bonus food appearing is low, making it a special reward for the player. Eating the bonus food grants additional 5 points to the player.
+
 ## Basic Build Instructions
 
 1. Clone this repo.
@@ -30,6 +44,45 @@ In this project, you can build your own C++ application or extend this Snake gam
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+## Rubric Item Matched
+### 1
+### `Loops, Functions, I/O - The project accepts user input and processes the input`
+> The project demonstrates an understanding of C++ functions and control structures.
+In obstacle.cpp, i have several functions that manage obstacle generation, such as the constructor and other member functions like checkCollision() and generateConnectedRects(). 
+
+> The project uses data structures and immutable variables.
+In obstacle.cpp, i use vectors (e.g., std::vector<SDL_Rect> rects) to store the coordinates of each obstacle.Additionally, you may have constant variables (e.g., const std::size_t gridWidth) to define grid sizes or other settings that don't change throughout the game, ensuring immutability where necessary. 
+
+### 2
+### `Object Oriented Programming`
+> One or more classes are added to the project with appropriate access specifiers for class members.
+A new Obstacle class has been added to introduce obstacles in the game. (obstacle.cpp)
+
+> Class constructors utilize member initialization lists.
+Within obstacle.cpp (line 8)
+
+> Classes abstract implementation details from their interfaces.
+
+In Obstacle class, methods (line 14 and 59) such as checkCollision() and generateConnectedRects() hide the specific implementation details of obstacle generation and collision detection inside the class implementation. The caller only needs to call these methods through the public interface and doesn't need to be concerned with how they are implemented.
+
+### 3
+### `Memory Management`
+> The project makes use of references in function declarations.
+Within obstacle.cpp (line 59) of Snake and game.cpp (line 90) - In the new std::thread of `BonusFoodTimer()`
+
+> The project uses move semantics to move data instead of copying it, where possible.
+With game.cpp (line 15) to give ownership of the obstacle to Game.
+
+> The project uses smart pointers instead of raw pointers.
+Within game.h (line 38) and main.cpp (line 19) to creat smart pointer.
+
+### 4
+### `Concurrency`
+> The project uses multithreading.
+Multithreading is implemented by using a separate thread to manage the timing and existence of the Bonus Food. Specifically, the BonusFoodTimer() function runs in its own thread, which continuously monitors the lifespan of the bonus food. This thread ensures that the bonus food is removed after a certain time. Within game.cpp (line 90)
+
+> A mutex or lock is used in the project.
+These shared variables (`bonus_food` and `is_bonus_food_active`) are accessed by both the main game loop and the bonus food management thread, so it is critical to prevent data races and ensure consistent behavior. Within game.cpp (line 170)
 
 ## CC Attribution-ShareAlike 4.0 International
 

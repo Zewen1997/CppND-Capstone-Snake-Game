@@ -14,6 +14,11 @@ int main() {
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight);
+
+  // Initialize and set the obstacle using a unique_ptr
+  std::unique_ptr<Obstacle> obstacle = std::make_unique<Obstacle>(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight, 8);
+  game.SetObstacle(std::move(obstacle));  // Transfer ownership of obstacle to Game
+
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
